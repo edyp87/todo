@@ -18,8 +18,12 @@ public:
 
 public slots:
     void addTask();
+    void removeTask(Task* task);
 
 private:
+    QString getTaskNameFromUser();
+    void addNamedTask(const QString& name);
+
     Ui::MainWindow *ui;
     QVector<Task*> m_tasks;
 };

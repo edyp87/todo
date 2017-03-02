@@ -19,7 +19,15 @@ public:
 
     ~Task();
 
+public slots:
+    void rename();
+
+signals:
+    void removed(Task* task);
+
 private:
+    QString getTaskNameFromUser();
+
     Ui::Task *ui;
 };
 
