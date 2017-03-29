@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+#include <memory>
+
 namespace Ui {
 class Task;
 }
@@ -32,7 +34,7 @@ signals:
 private:
     QString getTaskNameFromUser();
 
-    Ui::Task *ui;
+    std::unique_ptr<Ui::Task> ui;
 };
 
 #endif // TASK_H

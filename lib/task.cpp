@@ -2,10 +2,11 @@
 #include "ui_task.h"
 #include <QtDebug>
 #include <QInputDialog>
+#include <memory>
 
 Task::Task(const QString &name, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::Task)
+    ui(std::make_unique<Ui::Task>())
 {
     ui->setupUi(this);
     setName(name);
@@ -58,5 +59,4 @@ QString Task::getTaskNameFromUser()
 
 Task::~Task()
 {
-    delete ui;
 }

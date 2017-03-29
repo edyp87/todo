@@ -11,7 +11,7 @@ public:
     QtTestingTest();
 
 private Q_SLOTS:
-    void testCase1();
+    void shouldSetName();
 
 private:
     Task sut;
@@ -23,9 +23,10 @@ QtTestingTest::QtTestingTest()
 
 }
 
-void QtTestingTest::testCase1()
+void QtTestingTest::shouldSetName()
 {
-    QVERIFY2(true, "Failure");
+    sut.setName("newName");
+
 }
 
 QTEST_MAIN(QtTestingTest)
