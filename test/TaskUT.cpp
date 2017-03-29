@@ -1,6 +1,8 @@
 #include <QString>
 #include <QtTest>
 
+#include "task.h"
+
 class QtTestingTest : public QObject
 {
     Q_OBJECT
@@ -10,10 +12,15 @@ public:
 
 private Q_SLOTS:
     void testCase1();
+
+private:
+    Task sut;
 };
 
 QtTestingTest::QtTestingTest()
+    : sut("name")
 {
+
 }
 
 void QtTestingTest::testCase1()
@@ -21,6 +28,6 @@ void QtTestingTest::testCase1()
     QVERIFY2(true, "Failure");
 }
 
-QTEST_APPLESS_MAIN(QtTestingTest)
+QTEST_MAIN(QtTestingTest)
 
-#include "testfile.moc"
+#include "TaskUT.moc"
