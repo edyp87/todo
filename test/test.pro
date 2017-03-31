@@ -4,7 +4,7 @@ QT += testlib
 
 TEMPLATE = app
 
-LIBS += -L../lib -ltodolibrary -lgmock -pthread
+LIBS += -L../lib -L../lib/debug -ltodolibrary
 
 SOURCES += \
     TaskUT.cpp \

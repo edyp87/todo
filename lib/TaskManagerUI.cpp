@@ -62,6 +62,8 @@ void TaskManagerUI::removeTask(TaskUI *task)
     };
 
     m_tasks.erase(std::remove_if(m_tasks.begin(), m_tasks.end(), compare));
+
+    updateStatus();
 }
 
 void TaskManagerUI::taskStatusChanged(TaskUI *task)
