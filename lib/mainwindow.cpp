@@ -49,7 +49,7 @@ void MainWindow::addTask()
     updateStatus();
 }
 
-void MainWindow::removeTask(Task *task)
+void MainWindow::removeTask(TaskUI *task)
 {
     m_tasks.removeOne(task);
     ui->tasksLayout->removeWidget(task);
@@ -58,7 +58,7 @@ void MainWindow::removeTask(Task *task)
     updateStatus();
 }
 
-void MainWindow::taskStatusChanged(Task *task)
+void MainWindow::taskStatusChanged(TaskUI *task)
 {
     Q_UNUSED(task);
     updateStatus();
@@ -78,9 +78,9 @@ QString MainWindow::getTaskNameFromUser()
 void MainWindow::addNamedTask(const QString &name)
 {
     qDebug() << "Adding new task";
-    Task * task = new Task(name);
+    TaskUI * task = new TaskUI(name);
     m_tasks.append(task);
     ui->tasksLayout->addWidget(task);
-    connect(task, &Task::removed, this, &MainWindow::removeTask);
-    connect(task, &Task::statusChanged, this, &MainWindow::taskStatusChanged);
+    connect(task, &TaskUI::removed, this, &MainWindow::removeTask);
+    connect(task, &TaskUI::statusChanged, this, &MainWindow::taskStatusChanged);
 }

@@ -9,17 +9,17 @@ namespace Ui {
 class Task;
 }
 
-class Task : public QWidget
+class TaskUI : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit Task(const QString& name, QWidget *parent = 0);
+    explicit TaskUI(const QString& name, QWidget *parent = 0);
 
     void setName(const QString& name);
     bool isCompleted();
 
-    ~Task();
+    ~TaskUI();
 
 public slots:
     void rename();
@@ -28,8 +28,8 @@ private slots:
     void checked(bool checked);
 
 signals:
-    void removed(Task* task);
-    void statusChanged(Task * task);
+    void removed(TaskUI* task);
+    void statusChanged(TaskUI * task);
 
 private:
     QString getTaskNameFromUser();

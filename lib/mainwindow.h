@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "task.h"
+#include "TaskUI.h"
 
 namespace Ui {
 class MainWindow;
@@ -19,15 +19,15 @@ public:
 
 public slots:
     void addTask();
-    void removeTask(Task* task);
-    void taskStatusChanged(Task * task);
+    void removeTask(TaskUI* task);
+    void taskStatusChanged(TaskUI * task);
 
 private:
     QString getTaskNameFromUser();
     void addNamedTask(const QString& name);
 
     Ui::MainWindow *ui;
-    QVector<Task*> m_tasks;
+    QVector<TaskUI*> m_tasks;
 };
 
 #endif // MAINWINDOW_H

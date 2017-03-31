@@ -6,10 +6,14 @@ TEMPLATE = lib
 TARGET = todolibrary
 
 SOURCES += mainwindow.cpp \
-           task.cpp
+    TaskUI.cpp \
+    Task.cpp \
+    TaskManager.cpp
 
 HEADERS += mainwindow.h \
-           task.h
+    TaskUI.h \
+    Task.h \
+    TaskManager.h
 
 FORMS   += mainwindow.ui \
            task.ui
