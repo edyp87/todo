@@ -1,33 +1,40 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef TASKMANAGERUI2_H
+#define TASKMANAGERUI2_H
+
+#include <TaskManager.h>
 
 #include <QMainWindow>
-#include "TaskUI.h"
+
+#include <memory>
+
+#include <TaskUI.h>
 
 namespace Ui {
 class TaskManagerUI;
 }
 
-class TaskManagerUI : public QMainWindow
+class TaskManagerUI : public QMainWindow, public TaskManager
 {
-    Q_OBJECT
+
+Q_OBJECT
 
 public:
-    explicit TaskManagerUI(QWidget *parent = 0);
-    ~TaskManagerUI();
+
+    virtual ~TaskManagerUI();
+
+    TaskManagerUI(QWidget *parent = 0);
     void updateStatus();
 
 public slots:
     void addTask();
-    void removeTask(TaskUI* task);
+    void removeTask(TaskUI *task);
     void taskStatusChanged(TaskUI * task);
 
 private:
     QString getTaskNameFromUser();
     void addNamedTask(const QString& name);
 
-    Ui::TaskManagerUI *ui;
-    QVector<TaskUI*> m_tasks;
+    std::unique_ptr<Ui::TaskManagerUI> ui;
 };
 
-#endif // MAINWINDOW_H
+#endif // TASKMANAGERUI2_H

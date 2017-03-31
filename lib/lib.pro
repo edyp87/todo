@@ -6,20 +6,16 @@ TEMPLATE = lib
 TARGET = todolibrary
 
 SOURCES += \
-    TaskUI.cpp \
     Task.cpp \
     TaskManager.cpp \
-    TaskManagerUI.cpp \
-    TaskUI2.cpp \
-    TaskManagerUI2.cpp
+    TaskUI.cpp \
+    TaskManagerUI.cpp
 
 HEADERS += \
-    TaskUI.h \
     Task.h \
     TaskManager.h \
-    TaskManagerUI.h \
-    TaskUI2.h \
-    TaskManagerUI2.h
+    TaskUI.h \
+    TaskManagerUI.h
 
 FORMS   += mainwindow.ui \
            task.ui

@@ -1,29 +1,26 @@
 #include "TaskUI.h"
 #include "ui_task.h"
-#include <QtDebug>
+#include <QDebug>
 #include <QInputDialog>
-#include <memory>
+TaskUI::~TaskUI()
+{
+    qDebug() << "Removing TaskUI";
+}
 
-TaskUI::TaskUI(const QString &name, QWidget *parent) :
-    QWidget(parent),
-    ui(std::make_unique<Ui::Task>())
+TaskUI::TaskUI(QString name)
+    :Task(name), ui(std::make_unique<Ui::Task>())
 {
     ui->setupUi(this);
     setName(name);
-    connect(ui->editButton, &QPushButton::clicked, this, &TaskUI::rename);
     connect(ui->removeButton, &QPushButton::clicked, [this] { emit removed(this); });
+    connect(ui->editButton, &QPushButton::clicked, this, &TaskUI::rename);
     connect(ui->checkbox, &QCheckBox::toggled, this, &TaskUI::checked);
-
 }
 
-void TaskUI::setName(const QString &name)
+void TaskUI::setName(QString name)
 {
+    Task::setName(name);
     ui->checkbox->setText(name);
-}
-
-bool TaskUI::isCompleted()
-{
-    return ui->checkbox->isChecked();
 }
 
 void TaskUI::rename()
@@ -40,6 +37,15 @@ void TaskUI::rename()
 
 void TaskUI::checked(bool checked)
 {
+    if (checked)
+    {
+        Task::finish();
+    }
+    else
+    {
+        Task::undone();
+    }
+
     QFont font(ui->checkbox->font());
     font.setStrikeOut(checked);
     ui->checkbox->setFont(font);
@@ -55,8 +61,4 @@ QString TaskUI::getTaskNameFromUser()
                                          QLineEdit::Normal,
                                          tr("Untitled TaskUI"), &ok);
     return ok ? name : "";
-}
-
-TaskUI::~TaskUI()
-{
 }

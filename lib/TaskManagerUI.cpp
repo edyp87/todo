@@ -1,36 +1,38 @@
 #include "TaskManagerUI.h"
+
 #include "ui_mainwindow.h"
-#include <QDebug>
+
+#include <memory>
+
 #include <QInputDialog>
 
-TaskManagerUI::TaskManagerUI(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::TaskManagerUI),
-    m_tasks()
-{
-    ui->setupUi(this);
-    updateStatus();
-    connect(ui->addTaskButton, &QPushButton::clicked,
-            this, &TaskManagerUI::addTask);
-}
+#include <QDebug>
+#include "ui_task.h"
 
 TaskManagerUI::~TaskManagerUI()
 {
-    delete ui;
+}
+
+TaskManagerUI::TaskManagerUI(QWidget *parent)
+    : QMainWindow(parent), TaskManager(),
+      ui(std::make_unique<Ui::TaskManagerUI>())
+{
+    ui->setupUi(this);
+    connect(ui->addTaskButton, &QPushButton::clicked, this, &TaskManagerUI::addTask);
 }
 
 void TaskManagerUI::updateStatus()
 {
     int completedCount = 0;
 
-    for (auto task : m_tasks)
+    for (const auto & task : m_tasks)
     {
-        if (task->isCompleted())
+        if (task->isDone())
         {
             completedCount++;
         }
     }
-    int todos = m_tasks.size() - completedCount;
+    unsigned long todos = m_tasks.size() - static_cast<unsigned long>(completedCount);
 
     ui->statusLabel->setText(
                 QString("Status: %1 todo / %2 completed").arg(todos).arg(completedCount));
@@ -51,15 +53,20 @@ void TaskManagerUI::addTask()
 
 void TaskManagerUI::removeTask(TaskUI *task)
 {
-    m_tasks.removeOne(task);
+    qDebug() << "Remove task";
     ui->tasksLayout->removeWidget(task);
-    task->setParent(0);
-    delete task;
-    updateStatus();
+
+    auto compare = [task](const std::unique_ptr<Task> & taskPtr)
+    {
+        return task == taskPtr.get();
+    };
+
+    m_tasks.erase(std::remove_if(m_tasks.begin(), m_tasks.end(), compare));
 }
 
 void TaskManagerUI::taskStatusChanged(TaskUI *task)
 {
+    qDebug() << "Status changed";
     Q_UNUSED(task);
     updateStatus();
 }
@@ -78,9 +85,13 @@ QString TaskManagerUI::getTaskNameFromUser()
 void TaskManagerUI::addNamedTask(const QString &name)
 {
     qDebug() << "Adding new task";
-    TaskUI * task = new TaskUI(name);
-    m_tasks.append(task);
-    ui->tasksLayout->addWidget(task);
-    connect(task, &TaskUI::removed, this, &TaskManagerUI::removeTask);
-    connect(task, &TaskUI::statusChanged, this, &TaskManagerUI::taskStatusChanged);
+
+    auto task = std::make_unique<TaskUI>(name);
+
+    ui->tasksLayout->addWidget(task.get());
+    connect(task.get(), &TaskUI::removed, this, &TaskManagerUI::removeTask);
+    connect(task.get(), &TaskUI::statusChanged, this, &TaskManagerUI::taskStatusChanged);
+
+    m_tasks.push_back(std::move(task));
+
 }

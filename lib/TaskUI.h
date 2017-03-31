@@ -1,25 +1,30 @@
-#ifndef TASK_H
-#define TASK_H
+#ifndef TASKUI2_H
+#define TASKUI2_H
 
-#include <QWidget>
+#include <Task.h>
 
 #include <memory>
+
+#include <QWidget>
 
 namespace Ui {
 class Task;
 }
 
-class TaskUI : public QWidget
+class TaskUI : public QWidget, public Task
 {
-    Q_OBJECT
+
+Q_OBJECT
 
 public:
-    explicit TaskUI(const QString& name, QWidget *parent = 0);
-
-    void setName(const QString& name);
-    bool isCompleted();
-
     ~TaskUI();
+    TaskUI(QString name = "Unnamed task");
+
+    void setName(QString name) override;
+
+signals:
+    void removed(TaskUI* task);
+    void statusChanged(TaskUI * task);
 
 public slots:
     void rename();
@@ -27,14 +32,10 @@ public slots:
 private slots:
     void checked(bool checked);
 
-signals:
-    void removed(TaskUI* task);
-    void statusChanged(TaskUI * task);
-
 private:
     QString getTaskNameFromUser();
 
     std::unique_ptr<Ui::Task> ui;
 };
 
-#endif // TASK_H
+#endif // TASKUI2_H
