@@ -1,25 +1,25 @@
-#include "mainwindow.h"
+#include "TaskManagerUI.h"
 #include "ui_mainwindow.h"
 #include <QDebug>
 #include <QInputDialog>
 
-MainWindow::MainWindow(QWidget *parent) :
+TaskManagerUI::TaskManagerUI(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow),
+    ui(new Ui::TaskManagerUI),
     m_tasks()
 {
     ui->setupUi(this);
     updateStatus();
     connect(ui->addTaskButton, &QPushButton::clicked,
-            this, &MainWindow::addTask);
+            this, &TaskManagerUI::addTask);
 }
 
-MainWindow::~MainWindow()
+TaskManagerUI::~TaskManagerUI()
 {
     delete ui;
 }
 
-void MainWindow::updateStatus()
+void TaskManagerUI::updateStatus()
 {
     int completedCount = 0;
 
@@ -36,7 +36,7 @@ void MainWindow::updateStatus()
                 QString("Status: %1 todo / %2 completed").arg(todos).arg(completedCount));
 }
 
-void MainWindow::addTask()
+void TaskManagerUI::addTask()
 {
     QString name = getTaskNameFromUser();
 
@@ -49,7 +49,7 @@ void MainWindow::addTask()
     updateStatus();
 }
 
-void MainWindow::removeTask(TaskUI *task)
+void TaskManagerUI::removeTask(TaskUI *task)
 {
     m_tasks.removeOne(task);
     ui->tasksLayout->removeWidget(task);
@@ -58,13 +58,13 @@ void MainWindow::removeTask(TaskUI *task)
     updateStatus();
 }
 
-void MainWindow::taskStatusChanged(TaskUI *task)
+void TaskManagerUI::taskStatusChanged(TaskUI *task)
 {
     Q_UNUSED(task);
     updateStatus();
 }
 
-QString MainWindow::getTaskNameFromUser()
+QString TaskManagerUI::getTaskNameFromUser()
 {
     bool ok = false;
     QString name = QInputDialog::getText(this,
@@ -75,12 +75,12 @@ QString MainWindow::getTaskNameFromUser()
     return ok ? name : "";
 }
 
-void MainWindow::addNamedTask(const QString &name)
+void TaskManagerUI::addNamedTask(const QString &name)
 {
     qDebug() << "Adding new task";
     TaskUI * task = new TaskUI(name);
     m_tasks.append(task);
     ui->tasksLayout->addWidget(task);
-    connect(task, &TaskUI::removed, this, &MainWindow::removeTask);
-    connect(task, &TaskUI::statusChanged, this, &MainWindow::taskStatusChanged);
+    connect(task, &TaskUI::removed, this, &TaskManagerUI::removeTask);
+    connect(task, &TaskUI::statusChanged, this, &TaskManagerUI::taskStatusChanged);
 }

@@ -4,6 +4,8 @@
 
 #include "TaskManager.h"
 
+#include <memory>
+
 class TaskManagerUT : public QObject
 {
     Q_OBJECT
@@ -19,5 +21,5 @@ private Q_SLOTS:
     void tasksIdsAreGeneratedUniquely();
 
 private:
-    TaskManager sut;
+    std::unique_ptr<TaskManager> sut;
 };

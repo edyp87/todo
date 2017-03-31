@@ -5,16 +5,16 @@
 #include "TaskUI.h"
 
 namespace Ui {
-class MainWindow;
+class TaskManagerUI;
 }
 
-class MainWindow : public QMainWindow
+class TaskManagerUI : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    explicit TaskManagerUI(QWidget *parent = 0);
+    ~TaskManagerUI();
     void updateStatus();
 
 public slots:
@@ -26,7 +26,7 @@ private:
     QString getTaskNameFromUser();
     void addNamedTask(const QString& name);
 
-    Ui::MainWindow *ui;
+    Ui::TaskManagerUI *ui;
     QVector<TaskUI*> m_tasks;
 };
 

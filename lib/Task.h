@@ -6,13 +6,16 @@
 class Task
 {
 public:
+    virtual ~Task() = default;
+
     Task(QString name = "Unnamed task", unsigned _id = 0);
-    void setName(QString name);
-    void finish();
-    void undone();
-    bool isDone() const;
-    QString getName() const;
-    unsigned getId() const;
+
+    virtual void setName(QString name);
+    virtual void finish();
+    virtual void undone();
+    virtual bool isDone() const;
+    virtual QString getName() const;
+    virtual unsigned getId() const;
 
 private:
     QString name;
